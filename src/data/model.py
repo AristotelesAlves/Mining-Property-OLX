@@ -13,7 +13,7 @@ def salvarJson(data):
 def salvarCSV(imoveis):
     data_e_hora_atual = DataHoraAtual()
     with open(f'imoveis-{data_e_hora_atual}.csv', 'w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['section', 'title']
+        fieldnames = ['section', 'title', 'valor']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         
         writer.writeheader()
