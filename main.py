@@ -1,13 +1,9 @@
-
 import time
-
-from src.web.setup import setup
-from src.data.model import salvarJson
-
 from selenium.webdriver.common.by import By
+from src.web.setup import setup
+from src.data.model import salvarJson, salvarCSV
 
 driver = setup()
- 
 driver.get("https://www.olx.com.br/imoveis/venda/estado-ce/regiao-de-juazeiro-do-norte-e-sobral?o=2")
 
 time.sleep(5)
@@ -28,7 +24,9 @@ try:
         except Exception as e:
             break
 
-    salvarJson(imoveis, 'tentativa01')
+    salvarJson(imoveis)
+    salvarCSV(imoveis)
+
 
 except Exception as e:
     print(f"Erro geral: {e}")

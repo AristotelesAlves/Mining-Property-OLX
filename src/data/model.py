@@ -1,15 +1,21 @@
 import json
-import os
+import csv
+from datetime import datetime
 
-def localArmazenamentoJSON(filename):
-    directory = os.path.dirname(filename)
-    if directory and not os.path.exists(directory):
-        os.makedirs(directory)
+def DataHoraAtual():
+    return datetime.now().strftime('%d-%m-%Y %H-%M')
 
-def salvarJson(data, name):
-
-    localArmazenamentoJSON('./')
-
-    with open(name, 'w', encoding='utf-8') as file:
+def salvarJson(data):
+    data_e_hora_atual = DataHoraAtual()
+    with open(f'imoveis-{data_e_hora_atual}.json', 'w', encoding='utf-8') as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
-    print(f"Dados salvos em '{name}'")
+
+def salvarCSV(imoveis):
+    data_e_hora_atual = DataHoraAtual()
+    with open(f'imoveis-{data_e_hora_atual}.csv', 'w', newline='', encoding='utf-8') as csvfile:
+        fieldnames = ['section', 'title']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        
+        writer.writeheader()
+        for imovel in imoveis:
+            writer.writerow(imovel)
