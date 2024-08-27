@@ -12,7 +12,7 @@ totalPagina = 100
 
 try:
     for paginaAtual in range(totalPagina):
-        url = f'https://www.olx.com.br/imoveis/venda/estado-ce?o={paginaAtual + 1}'
+        url = f'https://www.olx.com.br/imoveis/venda/casas/estado-ce?o={paginaAtual + 1}'
         
         driver.get(url)
         SequenciaNumerica = 1
@@ -21,7 +21,7 @@ try:
                 xpath_section = f'//*[@id="main-content"]/div[6]/section[{SequenciaNumerica}]'
                 
                 ponteiro = driver.find_element(By.XPATH, xpath_section)
-                titulo = ponteiro.find_element(By.XPATH, './/h2').text 
+                descricao = ponteiro.find_element(By.XPATH, './/h2').text 
                 
                 valor = None
                 try:
@@ -43,7 +43,10 @@ try:
                 cidade, bairro = None, None
                 try:
                     endereço = ponteiro.find_element(By.XPATH, './/div[2]/div[2]/div/div/div[1]/p').text
-                    cidade, bairro = endereço.split(',')
+                    if ',' in endereço:
+                        cidade, bairro = endereço.split(',', 1)
+                    else:
+                        cidade = endereço
                 except:
                     None
 
@@ -62,7 +65,8 @@ try:
 
                 imoveis.append({
                     "section": SequenciaNumerica,
-                    "title": titulo,
+                    "Tipo":'casa',
+                    "descriçao": descricao,
                     "valor": valor,
                     "quartos": quartos,
                     "banheiros": banheiros,
@@ -78,14 +82,13 @@ try:
             except:
                 break
 
-        salvarJson(imoveis, paginaAtual)
-        salvarCSV(imoveis, paginaAtual)
-        imoveis = []
         paginaAtual += 1
-        time.sleep(10)
 
 except:
     None
+
+salvarJson(imoveis, paginaAtual)
+salvarCSV(imoveis)
 
 driver.quit()
 
