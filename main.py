@@ -6,6 +6,13 @@ from src.data.extrator import extrator
 from public.logoOLX import OLX
 from public.minhaMarca import marca
 
+def carregamentoPonteiro(SequenciaNumerica):
+    
+        if(SequenciaNumerica % 2 == 0):
+            return '/'
+        else:
+            return '\\'
+
 
 def main():
     
@@ -30,7 +37,7 @@ def main():
             try:
                 os.system('cls')
                 print(OLX)
-                print(f'\x1b[35mPagina {paginaAtual + 1} de {totalPagina}')
+                print(f'\x1b[35mPagina {paginaAtual + 1} de {totalPagina} {carregamentoPonteiro(SequenciaNumerica)}')
                 xpath_section = f'//*[@id="main-content"]/div[6]/section[{SequenciaNumerica}]'
                 ponteiro = driver.find_element(By.XPATH, xpath_section)
                 dados_imovel = extrator(ponteiro)
