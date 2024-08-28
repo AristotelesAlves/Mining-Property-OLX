@@ -1,103 +1,63 @@
-import time
+import os
 from selenium.webdriver.common.by import By
 from src.web.setup import setup
-from src.data.model import salvarJson, salvarCSV
-from datetime import datetime, timedelta
+from src.data.model import salvarJson, salvarCSV, DataHoraAtual
+from src.data.extrator import extrator
+from public.logoOLX import OLX
+from public.minhaMarca import marca
 
-driver = setup()
 
-imoveis = []
-paginaAtual = 0
-totalPagina = 100
+def main():
+    
+    driver = setup()
+    imoveis = []
+    
+    print('\x1b[35m-----------------------------------------------------')
+    print('Olá, Bem-vindo ao Mining Property OLX!')
+    print('-----------------------------------------------------')
+    
+    urlUsuario = input('Digite a URL da página: ')
+    totalPagina = int(input('Número de páginas: '))
 
-try:
     for paginaAtual in range(totalPagina):
-        url = f'https://www.olx.com.br/imoveis/venda/casas/estado-ce?o={paginaAtual + 1}'
-        
+
+        url = f"{urlUsuario}{paginaAtual + 1}"
         driver.get(url)
+
         SequenciaNumerica = 1
+
         while True:
             try:
+                os.system('cls')
+                print(OLX)
+                print(f'\x1b[35mPagina {paginaAtual + 1} de {totalPagina}')
                 xpath_section = f'//*[@id="main-content"]/div[6]/section[{SequenciaNumerica}]'
-                
                 ponteiro = driver.find_element(By.XPATH, xpath_section)
-                descricao = ponteiro.find_element(By.XPATH, './/h2').text 
-                
-                valor = None
-                try:
-                    valor = ponteiro.find_element(By.XPATH, './/div[2]/div[1]/div[2]/h3').text
-                    _, valor = valor.split(' ')
-                except:
-                    None
-
-                quartos, banheiros, metros_quadrados, vagas_carro = None, None, None, None
-                try:
-                    lista = ponteiro.find_element(By.XPATH, './/div[2]/div[1]/div[1]/ul[1]')
-                    quartos = lista.find_element(By.XPATH, './/span[@aria-label[contains(., "quartos")]]').text.split('+')[0]
-                    banheiros = lista.find_element(By.XPATH, './/span[@aria-label[contains(., "banheiro")]]').text.split('+')[0]
-                    metros_quadrados = lista.find_element(By.XPATH, './/span[@aria-label[contains(., "metros quadrados")]]').text.split('m²')[0]
-                    vagas_carro = lista.find_element(By.XPATH, './/span[@aria-label[contains(., "vaga de garagem")]]').text.split('+')[0]
-                except:
-                    None
-
-                cidade, bairro = None, None
-                try:
-                    endereço = ponteiro.find_element(By.XPATH, './/div[2]/div[2]/div/div/div[1]/p').text
-                    if ',' in endereço:
-                        cidade, bairro = endereço.split(',', 1)
-                    else:
-                        cidade = endereço
-                except:
-                    None
-
-                dia, hora = None, None
-                try:
-                    dataPostagem = ponteiro.find_element(By.XPATH, './/div[2]/div[2]/div/div/div[2]/p').text
-                    dia, hora = dataPostagem.split(',')
-                    if dia == 'Hoje':
-                        dia = datetime.now().strftime('%d-%m-%Y ')
-                    elif dia == 'Ontem':
-                        dia = (datetime.now() - timedelta(days=1)).strftime('%d-%m-%Y ')
-                    else:
-                         dia = datetime.strptime(f"{dia} {hora}", '%d de %b %H:%M').strftime('%d-%m-%Y')
-                except:
-                    None
-
-                imoveis.append({
-                    "section": SequenciaNumerica,
-                    "Tipo":'casa',
-                    "descriçao": descricao,
-                    "valor": valor,
-                    "quartos": quartos,
-                    "banheiros": banheiros,
-                    "metros_quadrados": metros_quadrados,
-                    "vagas_carro": vagas_carro,
-                    "cidade": cidade,
-                    "bairro": bairro,
-                    "data de postagem": dia + hora
-                })
-
-                SequenciaNumerica += 1  
-
+                dados_imovel = extrator(ponteiro)
+                dados_imovel.update({"id": SequenciaNumerica, "Tipo": 'casa'})
+                imoveis.append(dados_imovel)
+                SequenciaNumerica += 1
             except:
                 break
 
-        paginaAtual += 1
+    driver.quit()
+    
+    if imoveis:
+        os.system('cls')
+        salvarJson(imoveis)
+        salvarCSV(imoveis)
+        print()
+        print(marca)
+        print("Mining finalizado com sucesso!")
+        print(f"Totalizando {len(imoveis)} anúncios")
+        print()
+        print("\x1b[35m|----------------------------------------------------------|")
+        print(f"\x1b[35m| CSV salvo em ./file/csv/imoveis{DataHoraAtual()}.csv      |")
+        print(f"| JSON salvo em ./file/json/imoveis{DataHoraAtual()}.json   |")
+        print("\x1b[35m|----------------------------------------------------------|")
+        print()
+    else:
+        print("Error: Nenhum dado encontrado!")
 
-except:
-    None
-
-salvarJson(imoveis, paginaAtual)
-salvarCSV(imoveis)
-
-driver.quit()
-
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
-print('Acabou')
+if __name__ == "__main__":
+    main()
