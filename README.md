@@ -77,7 +77,7 @@ O script abrirá o navegador, percorrerá as páginas fornecidas e coletará as 
 
 ## Contato
 
-Para mais informações, entre em contato com seu-email@dominio.com.
+Para mais informações, entre em contato com arystotelys@gmail.com.
 
 ---
 
