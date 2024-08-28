@@ -1,8 +1,27 @@
+---
+
 # Mining Property OLX
 
 ## Descrição
 
 O projeto **Mining Property OLX** é uma ferramenta de mineração de dados que coleta informações de imóveis listados no site OLX. Utilizando o Selenium para automação de navegador, o script percorre as páginas fornecidas pelo usuário e extrai dados sobre imóveis, salvando-os em formatos JSON e CSV.
+
+## Imagens do projeto
+
+![Url do site em que vai realizar a mineração](https://github.com/user-attachments/assets/de15d9d5-1f48-4027-923d-c36ee22ed5a8)
+*Url do site em que vai realizar a mineração*
+
+![Quantidade de páginas que o Mining-Property-OLX vai percorrer](https://github.com/user-attachments/assets/0ae63ed3-bf88-4639-aa6b-2a21b8861900)
+*Quantidade de páginas que o Mining-Property-OLX vai percorrer*
+
+![Percorrendo os anúncios](https://github.com/user-attachments/assets/b56fcc11-c8cb-4109-99a4-d3dd6232bf39)
+*Percorrendo os anúncios*
+
+![Finalização e quantidades de anúncios encontrados](https://github.com/user-attachments/assets/546cd1b5-959c-4205-bc8a-8cd1e5fb5159)
+*Finalização e quantidades de anúncios encontrados*
+
+![Arquivos gerados](https://github.com/user-attachments/assets/7e279f64-67ca-4997-ac10-e8385304f2ac)
+*Arquivos gerados*
 
 ## Funcionalidades
 
@@ -62,4 +81,4 @@ Para mais informações, entre em contato com seu-email@dominio.com.
 
 ---
 
-Certifique-se de substituir `https://github.com/seuusuario/mining-property-olx.git` e `arystotelys@gmail.com.com` com as informações específicas do seu repositório e detalhes de contato.
+Certifique-se de substituir `https://github.com/seuusuario/mining-property-olx.git` e `seu-email@dominio.com` com as informações específicas do seu repositório e detalhes de contato.
